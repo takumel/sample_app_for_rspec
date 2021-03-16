@@ -8,24 +8,26 @@ RSpec.describe Task, type: :model do
       expect(task.errors).to be_empty
     end
     it 'is invalid without title' do
-      task = build(:task, title: nil)
-      task.valid?
-      expect(task.errors[:title]).to include("can't be blank")
+      task_without_title = build(:task, title: nil)
+      expect(task_without_title).to be_invalid
+      expect(task_without_title.errors[:title]).to eq ["can't be blank"]
     end
     it 'is invalid without status' do
-      task = build(:task, status: nil)
-      task.valid?
-      expect(task.errors[:status]).to include("can't be blank")
+      task_without_status = build(:task, status: nil)
+      expect(task_without_status).to be_invalid
+      expect(task_without_status.errors[:status]).to eq ["can't be blank"]
      end
     it 'is invalid with a duplicate title' do
-      task1 = create(:task, title: 'hoge')
-      task = build(task)
-      task.valid?
-      expect(task.errors[:title]).to include("has arleady been taken")
+      task = create(:task)
+      task_duplicate_title = build(:task, title: task.title)
+      expect(task_duplicate_title).to be_invalid
+      expect(task_duplicate_title.errors[:title]).to eq ["has already been taken"]
      end
     it 'is valid with another title' do
-      FactoryBot.crate(task)
-      taks = FactoryBot.build(taks)
+      task = create(:task)
+      task_with_another_title = build(:task, title: 'another_title')
+      expect(task_with_another_title).to be_valid
+      expect(task_with_another_title.errors).to be_empty
     end
   end
 end
