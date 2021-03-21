@@ -46,7 +46,7 @@ RSpec.describe 'Tasks', type: :system do
 
     describe 'タスク新規登録' do
       context 'フォームの入力値が正常' do
-        it 'タスクの新規作成が成功する' do
+        it 'タスクの新規作成が成功' do
           visit new_task_path
           fill_in 'Title', with: 'test_title'
           fill_in 'Content', with: 'test_content'
@@ -95,10 +95,10 @@ RSpec.describe 'Tasks', type: :system do
       context 'フォームの入力値が正常' do
         it 'タスクの編集が成功する' do
           fill_in 'Title', with: 'updated_title'
-          select :done, from: 'Status'
+          select :todo, from: 'Status'
           click_button 'Update Task'
           expect(page).to have_content 'Title: updated_title'
-          expect(page).to have_content 'Status: done'
+          expect(page).to have_content 'Status: todo'
           expect(page).to have_content 'Task was successfully updated.'
           expect(current_path).to eq task_path(task)
         end
